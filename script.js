@@ -1,3 +1,4 @@
+
 var doctors = [
   ["D-101", "Коваленко Ірина Петрівна", "Терапевт", 204, 14, "Вища", "+380 44 555 01 01", "Пн–Пт, 8:00–14:00"],
   ["D-102", "Шевченко Андрій Олексійович", "Кардіолог", 312, 21, "Вища", "+380 44 555 01 02", "Вт–Сб, 9:00–16:00"],
@@ -14,6 +15,7 @@ var patients = [
   ["P-2005", "Кравчук Валентина Іванівна", "30.01.1958", "Жін.", "A (II) Rh−", "+380 96 567 89 01", "м. Київ, вул. Антоновича, 51, кв. 8", "ПЛ-448124"]
 ];
 
+
 var visits = [
   ["V-5001", "21.10.2026, 09:00", "Лисенко М. Д.", "Коваленко І. П.", "Кашель, температура", "planned", 600],
   ["V-5002", "21.10.2026, 10:30", "Гриценко О. В.", "Шевченко А. О.", "Контроль тиску", "planned", 850],
@@ -21,15 +23,15 @@ var visits = [
   ["V-5004", "16.10.2026, 14:00", "Ярмоленко Д. С.", "Мельник В. С.", "Консультація перед операцією", "done", 900],
   ["V-5005", "15.10.2026, 13:00", "Кравчук В. І.", "Ткаченко Н. І.", "Головний біль, запаморочення", "cancelled", 0]
 ];
-//Статус
+
+
 var statusNames = {
   planned: "Заплановано",
   done: "Завершено",
   cancelled: "Скасовано"
 };
 
-//Cтворюємо таблиці з даними
-// Універсальна функція: бере масив і вставляє рядки в потрібний tbody
+
 function fillTable(tbodyId, data) {
   var html = "";
 
@@ -45,7 +47,6 @@ function fillTable(tbodyId, data) {
 }
 
 
-// Для прийомів 
 function fillVisits() {
   var html = "";
 
@@ -70,14 +71,12 @@ fillTable("patients-body", patients);
 fillVisits();
 
 
-// Вкладки
-
 var tabs = document.querySelectorAll(".tab");
 var panels = document.querySelectorAll(".panel");
 
 for (var i = 0; i < tabs.length; i++) {
   tabs[i].addEventListener("click", function () {
-    // вимикаємо всі вкладки й панелі
+    // спочатку вимикаємо всі вкладки й панелі
     for (var k = 0; k < tabs.length; k++) {
       tabs[k].classList.remove("is-active");
       panels[k].classList.remove("is-active");
@@ -88,3 +87,92 @@ for (var i = 0; i < tabs.length; i++) {
     document.getElementById(panelId).classList.add("is-active");
   });
 }
+
+
+// Попати
+document.getElementById("open-doctors").onclick = function () {
+  document.getElementById("dialog-doctors").showModal();
+};
+document.getElementById("open-patients").onclick = function () {
+  document.getElementById("dialog-patients").showModal();
+};
+document.getElementById("open-visits").onclick = function () {
+  document.getElementById("dialog-visits").showModal();
+};
+
+//закриття попапів 
+document.getElementById("cancel-doctors").onclick = function () {
+  document.getElementById("dialog-doctors").close();
+};
+document.getElementById("cancel-patients").onclick = function () {
+  document.getElementById("dialog-patients").close();
+};
+document.getElementById("cancel-visits").onclick = function () {
+  document.getElementById("dialog-visits").close();
+};
+
+// додавання лікаря 
+document.getElementById("form-doctors").onsubmit = function (event) {
+  event.preventDefault(); // щоб сторінка не перезавантажувалась
+
+  // збираємо значення з полів у новий рядок (порядок як у таблиці)
+  var newDoctor = [
+    document.getElementById("doc-id").value,
+    document.getElementById("doc-name").value,
+    document.getElementById("doc-spec").value,
+    document.getElementById("doc-room").value,
+    document.getElementById("doc-exp").value,
+    document.getElementById("doc-category").value,
+    document.getElementById("doc-phone").value,
+    document.getElementById("doc-schedule").value
+  ];
+
+  doctors.push(newDoctor);            // додаємо в масив
+  fillTable("doctors-body", doctors); // перемальовуємо таблицю
+
+  this.reset();                                   // очищаємо форму
+  document.getElementById("dialog-doctors").close(); // закриваємо попап
+};
+
+// --- додавання пацієнта ---
+document.getElementById("form-patients").onsubmit = function (event) {
+  event.preventDefault();
+
+  var newPatient = [
+    document.getElementById("pat-id").value,
+    document.getElementById("pat-name").value,
+    document.getElementById("pat-birth").value,
+    document.getElementById("pat-gender").value,
+    document.getElementById("pat-blood").value,
+    document.getElementById("pat-phone").value,
+    document.getElementById("pat-address").value,
+    document.getElementById("pat-policy").value
+  ];
+
+  patients.push(newPatient);
+  fillTable("patients-body", patients);
+
+  this.reset();
+  document.getElementById("dialog-patients").close();
+};
+
+// --- додавання прийому ---
+document.getElementById("form-visits").onsubmit = function (event) {
+  event.preventDefault();
+
+  var newVisit = [
+    document.getElementById("vis-id").value,
+    document.getElementById("vis-date").value,
+    document.getElementById("vis-patient").value,
+    document.getElementById("vis-doctor").value,
+    document.getElementById("vis-reason").value,
+    document.getElementById("vis-status").value, // planned / done / cancelled
+    document.getElementById("vis-price").value
+  ];
+
+  visits.push(newVisit);
+  fillVisits();
+
+  this.reset();
+  document.getElementById("dialog-visits").close();
+};

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Лікарня — база даних</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="page">
+    <header class="page-head">
+      <h1>Міська лікарня №1</h1>
+      <p>Довідник: лікарі, пацієнти та записи на прийом</p>
+    </header>
+
+    <div class="tabs">
+      <button class="tab is-active" id="btn-doctors">Лікарі</button>
+      <button class="tab" id="btn-patients">Пацієнти</button>
+      <button class="tab" id="btn-visits">Прийоми</button>
+    </div>
+
+    <!-- Таблиця 1: Лікарі -->
+    <section class="panel is-active" id="panel-doctors" >
+      <div class="table-wrap">
+        <table>
+          <caption>Лікарі відділень</caption>
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">ПІБ</th>
+              <th scope="col">Спеціальність</th>
+              <th scope="col">Кабінет</th>
+              <th scope="col">Стаж, років</th>
+              <th scope="col">Категорія</th>
+              <th scope="col">Телефон</th>
+              <th scope="col">Графік роботи</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+                <td>D-101</td>
+                <td>Коваленко Ірина Петрівна</td>
+                <td>Терапевт</td>
+                <td>204</td>
+                <td>14</td>
+                <td>Вища</td>
+                <td>+380 44 555 01 01</td>
+                <td>Пн–Пт, 8:00–14:00</td>
+            </tr>
+            <tr>
+                <td>D-102</td>
+                <td>Шевченко Андрій Олексійович</td>
+                <td>Кардіолог</td>
+                <td>312</td>
+                <td>21</td>
+                <td>Вища</td>
+                <td>+380 44 555 01 02</td>
+                <td>Вт–Сб, 9:00–16:00</td>
+            </tr>
+            <tr>
+                <td>D-103</td>
+                <td>Бондаренко Олена Миколаївна</td>
+                <td>Педіатр</td>
+                <td>110</td>
+                <td>8</td>
+                <td>Перша</td>
+                <td>+380 44 555 01 03</td>
+                <td>Пн–Пт, 10:00–17:00</td>
+            </tr>
+            <tr>
+                <td>D-104</td>
+                <td>Мельник Василь Степанович</td>
+                <td>Хірург</td>
+                <td>401</td>
+                <td>27</td>
+                <td>Вища</td>
+                <td>+380 44 555 01 04</td>
+                <td>Пн, Ср, Пт, 8:00–15:00</td>
+            </tr>
+            <tr>
+                <td>D-105</td>
+                <td>Ткаченко Наталія Ігорівна</td>
+                <td>Невролог</td>
+                <td>218</td>
+                <td>11</td>
+                <td>Друга</td>
+                <td>+380 44 555 01 05</td>
+                <td>Пн–Чт, 12:00–19:00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Таблиця 2: Пацієнти -->
+    <section class="panel" id="panel-patients" >
+      <div class="table-wrap">
+        <table>
+          <caption>Пацієнти лікарні</caption>
+          <thead>
+            <tr>
+              <th scope="col">№ картки</th>
+              <th scope="col">ПІБ</th>
+              <th scope="col">Дата народження</th>
+              <th scope="col">Стать</th>
+              <th scope="col">Група крові</th>
+              <th scope="col">Телефон</th>
+              <th scope="col">Адреса</th>
+              <th scope="col">Номер полісу</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+                <td>P-2001</td>
+                <td>Лисенко Марія Дмитрівна</td>
+                <td>12.03.1985</td>
+                <td>Жін.</td>
+                <td>A (II) Rh+</td>
+                <td>+380 67 123 45 67</td>
+                <td>м. Харків, вул. Сумська, 22, кв. 5</td>
+                <td>ПЛ-448120</td>
+            </tr>
+            <tr>
+                <td>P-2002</td>
+                <td>Гриценко Олег Віталійович</td>
+                <td>27.09.1972</td><td>Чол.</td>
+                <td>O (I) Rh+</td>
+                <td>+380 50 234 56 78</td>
+                <td>м. Харків, пр. Перемоги, 80, кв. 41</td>
+                <td>ПЛ-448121</td>
+            </tr>
+            <tr>
+                <td>P-2003</td>
+                <td>Савченко Софія Андріївна</td>
+                <td>05.06.2016</td>
+                <td>Жін.</td><td>B (III) Rh−</td>
+                <td>+380 93 345 67 89</td>
+                <td>м. Харків, вул. Іллінська, 9, кв. 17</td>
+                <td>ПЛ-448122</td></tr>
+            <tr>
+                <td>P-2004</td>
+                <td>Ярмоленко Денис Сергійович</td>
+                <td>18.11.1994</td>
+                <td>Чол.</td>
+                <td>AB (IV) Rh+</td>
+                <td>+380 63 456 78 90</td>
+                <td>м. Харків, бул. Полтавський Шлях, 14, кв. 63</td>
+                <td>ПЛ-448123</td></tr>
+            <tr>
+                <td>P-2005</td>
+                <td>Кравчук Валентина Іванівна</td>
+                <td>30.01.1958</td>
+                <td>Жін.</td>
+                <td>A (II) Rh−</td>
+                <td>+380 96 567 89 01</td>
+                <td>м. Київ, вул. Антоновича, 51, кв. 8</td>
+                <td>ПЛ-448124</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Таблиця 3: Прийоми -->
+    <section class="panel" id="panel-visits">
+      <div class="table-wrap">
+        <table>
+          <caption>Записи на прийом</caption>
+          <thead>
+            <tr>
+              <th scope="col">№ запису</th>
+              <th scope="col">Дата і час</th>
+              <th scope="col">Пацієнт</th>
+              <th scope="col">Лікар</th>
+              <th scope="col">Причина звернення</th>
+              <th scope="col">Статус</th>
+              <th scope="col">Вартість, грн</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+                <td>V-5001</td>
+                <td>21.10.2026, 09:00</td>
+                <td>Лисенко М. Д.</td>
+                <td>Коваленко І. П.</td>
+                <td>Кашель, температура</td>
+                <td><span class="status status-planned">Заплановано</span></td>
+                <td>600</td>
+            </tr>
+            <tr>
+                <td>V-5002</td>
+                <td>21.10.2026, 10:30</td>
+                <td>Гриценко О. В.</td>
+                <td>Шевченко А. О.</td>
+                <td>Контроль тиску</td>
+                <td><span class="status status-planned">Заплановано</span></td>
+                <td>850</td>
+            </tr>
+            <tr>
+                <td>V-5003</td>
+                <td>19.10.2026, 11:15</td>
+                <td>Савченко С. А.</td>
+                <td>Бондаренко О. М.</td>
+                <td>Профілактичний огляд</td>
+                <td><span class="status status-done">Завершено</span></td>
+                <td>500</td>
+            </tr>
+            <tr>
+                <td>V-5004</td>
+                <td>16.10.2026, 14:00</td>
+                <td>Ярмоленко Д. С.</td>
+                <td>Мельник В. С.</td>
+                <td>Консультація перед операцією</td>
+                <td><span class="status status-done">Завершено</span></td>
+                <td>900</td>
+            </tr>
+            <tr>
+                <td>V-5005</td>
+                <td>15.10.2026, 13:00</td>
+                <td>Кравчук В. І.</td>
+                <td>Ткаченко Н. І.</td>
+                <td>Головний біль, запаморочення</td>
+                <td><span class="status status-cancelled">Скасовано</span></td>
+                <td>0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
