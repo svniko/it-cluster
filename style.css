@@ -15,8 +15,6 @@
   --cancel-ink: #8a2c22;
 }
 
-/* *, *::before, *::after { box-sizing: border-box; } */
-
 body {
   margin: 0;
   background: var(--bg);
@@ -44,7 +42,7 @@ body {
   color: var(--muted);
 }
 
-/* Таби */
+/* Вкладки */
 .tabs {
   display: flex;
   gap: 4px;
@@ -66,7 +64,10 @@ body {
   transition: color 0.15s, background-color 0.15s, border-color 0.15s;
 }
 
-.tab:hover { color: var(--brand-dark); background: rgba(11, 110, 110, 0.07); }
+.tab:hover {
+  color: var(--brand-dark);
+  background: rgba(11, 110, 110, 0.07);
+}
 
 .tab.is-active {
   color: var(--brand-dark);
@@ -123,6 +124,38 @@ tbody tr:hover { background: #e4f0f0; }
 tbody td { border-bottom: 1px solid var(--line); }
 tbody tr:last-child td { border-bottom: 0; }
 
+/* Можливість редагування ПІБ */
+.edit-name {
+  cursor: pointer;
+}
+
+.edit-name:hover {
+  text-decoration: underline;
+  color: var(--brand-dark);
+}
+
+.edit-input {
+  width: 180px;
+  padding: 5px;
+  border: 1px solid var(--brand);
+  border-radius: 4px;
+  font: inherit;
+}
+
+/* Кнопка видалення */
+.delete-btn {
+  border: 0;
+  border-radius: 5px;
+  padding: 5px 10px;
+  background: #e74c3c;
+  color: white;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+}
+
 /* Статуси прийомів */
 .status {
   display: inline-block;
@@ -132,6 +165,7 @@ tbody tr:last-child td { border-bottom: 0; }
   font-weight: 600;
   white-space: nowrap;
 }
+
 .status-done { background: var(--done-bg); color: var(--done-ink); }
 .status-planned { background: var(--planned-bg); color: var(--planned-ink); }
 .status-cancelled { background: var(--cancel-bg); color: var(--cancel-ink); }
@@ -158,6 +192,7 @@ tbody tr:last-child td { border-bottom: 0; }
   font-weight: 600;
   cursor: pointer;
 }
+
 .add-btn:hover { background: var(--brand-dark); }
 
 /* Попап з формою */
@@ -169,9 +204,13 @@ dialog {
   padding: 24px;
   color: var(--ink);
 }
+
 dialog::backdrop { background: rgba(0, 0, 0, 0.45); }
 
-dialog h2 { margin: 0 0 16px; font-size: 1.3rem; }
+dialog h2 {
+  margin: 0 0 16px;
+  font-size: 1.3rem;
+}
 
 dialog label {
   display: block;
@@ -199,6 +238,7 @@ dialog select {
   gap: 8px;
   margin-top: 16px;
 }
+
 .form-buttons button {
   padding: 8px 16px;
   border-radius: 8px;
@@ -206,5 +246,15 @@ dialog select {
   font-weight: 600;
   cursor: pointer;
 }
-.cancel-btn { background: #fff; border: 1px solid var(--line); color: var(--ink); }
-.save-btn { background: var(--brand); border: 1px solid var(--brand); color: #fff; }
+
+.cancel-btn {
+  background: #fff;
+  border: 1px solid var(--line);
+  color: var(--ink);
+}
+
+.save-btn {
+  background: var(--brand);
+  border: 1px solid var(--brand);
+  color: #fff;
+}

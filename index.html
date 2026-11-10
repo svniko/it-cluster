@@ -19,7 +19,7 @@
       <button class="tab" id="btn-visits">Прийоми</button>
     </div>
 
-    <!-- Таблиця 1: Лікарі -->
+    <!-- Лікарі -->
     <section class="panel is-active" id="panel-doctors">
       <button class="add-btn" id="open-doctors">+ Додати</button>
       <div class="table-wrap">
@@ -35,6 +35,7 @@
               <th scope="col">Категорія</th>
               <th scope="col">Телефон</th>
               <th scope="col">Графік роботи</th>
+              <th scope="col">Дія</th>
             </tr>
           </thead>
           <tbody id="doctors-body"></tbody>
@@ -42,7 +43,7 @@
       </div>
     </section>
 
-    <!-- Таблиця 2: Пацієнти -->
+    <!-- Пацієнти -->
     <section class="panel" id="panel-patients">
       <button class="add-btn" id="open-patients">+ Додати</button>
       <div class="table-wrap">
@@ -58,6 +59,7 @@
               <th scope="col">Телефон</th>
               <th scope="col">Адреса</th>
               <th scope="col">Номер полісу</th>
+              <th scope="col">Дія</th>
             </tr>
           </thead>
           <tbody id="patients-body"></tbody>
@@ -65,7 +67,7 @@
       </div>
     </section>
 
-    <!-- Таблиця 3: Прийоми -->
+    <!-- Прийоми -->
     <section class="panel" id="panel-visits">
       <button class="add-btn" id="open-visits">+ Додати</button>
       <div class="table-wrap">
@@ -80,6 +82,7 @@
               <th scope="col">Причина звернення</th>
               <th scope="col">Статус</th>
               <th scope="col">Вартість, грн</th>
+              <th scope="col">Дія</th>
             </tr>
           </thead>
           <tbody id="visits-body"></tbody>
@@ -154,8 +157,8 @@
       <h2>Новий запис на прийом</h2>
       <label>№ запису <input type="text" id="vis-id" placeholder="V-5006" required></label>
       <label>Дата і час <input type="text" id="vis-date" placeholder="22.10.2026, 09:00" required></label>
-      <label>Пацієнт <input type="text" id="vis-patient" placeholder="Прізвище І. П." required></label>
-      <label>Лікар <input type="text" id="vis-doctor" placeholder="Прізвище І. П." required></label>
+      <label>Пацієнт <select id="vis-patient" required></select></label>
+      <label>Лікар <select id="vis-doctor" required></select></label>
       <label>Причина звернення <input type="text" id="vis-reason" required></label>
       <label>Статус
         <select id="vis-status">

@@ -1,4 +1,3 @@
-
 var doctors = [
   ["D-101", "Коваленко Ірина Петрівна", "Терапевт", 204, 14, "Вища", "+380 44 555 01 01", "Пн–Пт, 8:00–14:00"],
   ["D-102", "Шевченко Андрій Олексійович", "Кардіолог", 312, 21, "Вища", "+380 44 555 01 02", "Вт–Сб, 9:00–16:00"],
@@ -15,7 +14,6 @@ var patients = [
   ["P-2005", "Кравчук Валентина Іванівна", "30.01.1958", "Жін.", "A (II) Rh−", "+380 96 567 89 01", "м. Київ, вул. Антоновича, 51, кв. 8", "ПЛ-448124"]
 ];
 
-
 var visits = [
   ["V-5001", "21.10.2026, 09:00", "Лисенко М. Д.", "Коваленко І. П.", "Кашель, температура", "planned", 600],
   ["V-5002", "21.10.2026, 10:30", "Гриценко О. В.", "Шевченко А. О.", "Контроль тиску", "planned", 850],
@@ -24,7 +22,6 @@ var visits = [
   ["V-5005", "15.10.2026, 13:00", "Кравчук В. І.", "Ткаченко Н. І.", "Головний біль, запаморочення", "cancelled", 0]
 ];
 
-
 var statusNames = {
   planned: "Заплановано",
   done: "Завершено",
@@ -32,26 +29,98 @@ var statusNames = {
 };
 
 
+// Збереження всіх таблиць у localStorage
+function saveData() {
+  var all = {
+    doctors: doctors,
+    patients: patients,
+    visits: visits
+  };
+
+  localStorage.setItem("hospital", JSON.stringify(all));
+}
+
+
+// Завантаження даних з localStorage (якщо вони там є)
+function loadData() {
+  var saved = localStorage.getItem("hospital");
+
+  if (saved != null) {
+    var all = JSON.parse(saved);
+    doctors = all.doctors;
+    patients = all.patients;
+    visits = all.visits;
+  }
+}
+
+
+// Перетворюємо повне ПІБ на скорочене
+function shortName(name) {
+  var words = name.split(" ");
+
+  if (words.length < 3) {
+    return name;
+  }
+
+  return words[0] + " " + words[1][0] + ". " + words[2][0] + ".";
+}
+
+
+// Заповнюємо випадні списки пацієнтів і лікарів у формі прийому
+function fillSelects() {
+  var html = "";
+
+  for (var i = 0; i < patients.length; i++) {
+    html = html + "<option>" + shortName(patients[i][1]) + "</option>";
+  }
+  document.getElementById("vis-patient").innerHTML = html;
+
+  html = "";
+
+  for (var i = 0; i < doctors.length; i++) {
+    html = html + "<option>" + shortName(doctors[i][1]) + "</option>";
+  }
+  document.getElementById("vis-doctor").innerHTML = html;
+}
+
+
+// Виведення лікарів і пацієнтів
 function fillTable(tbodyId, data) {
   var html = "";
 
   for (var i = 0; i < data.length; i++) {
     html = html + "<tr>";
+
     for (var j = 0; j < data[i].length; j++) {
-      html = html + "<td>" + data[i][j] + "</td>";
+
+      // Для ПІБ додаємо можливість редагування
+      if (j == 1) {
+        html = html + '<td class="edit-name" onclick="editName(\'' + tbodyId + '\',' + i + ')">' + data[i][j] + "</td>";
+      }
+      else {
+        html = html + "<td>" + data[i][j] + "</td>";
+      }
     }
+
+    // Кнопка видалення
+    html = html + '<td><button class="delete-btn" onclick="deleteRow(\'' + tbodyId + '\',' + i + ')">✖</button></td>';
     html = html + "</tr>";
   }
 
   document.getElementById(tbodyId).innerHTML = html;
+
+  // Оновлюємо списки у формі прийому
+  fillSelects();
 }
 
 
+// Виведення записів на прийом
 function fillVisits() {
   var html = "";
 
   for (var i = 0; i < visits.length; i++) {
     var v = visits[i];
+
     html = html + "<tr>";
     html = html + "<td>" + v[0] + "</td>";
     html = html + "<td>" + v[1] + "</td>";
@@ -60,62 +129,193 @@ function fillVisits() {
     html = html + "<td>" + v[4] + "</td>";
     html = html + '<td><span class="status status-' + v[5] + '">' + statusNames[v[5]] + "</span></td>";
     html = html + "<td>" + v[6] + "</td>";
+
+    // Кнопка видалення прийому
+    html = html + '<td><button class="delete-btn" onclick="deleteRow(\'visits-body\',' + i + ')">✖</button></td>';
     html = html + "</tr>";
   }
 
   document.getElementById("visits-body").innerHTML = html;
 }
 
+
+// Видалення рядків
+function deleteRow(type, index) {
+
+  // Видалення лікаря
+  if (type == "doctors-body") {
+    var name = shortName(doctors[index][1]);
+
+    // Перевіряємо, чи використовується лікар у прийомах
+    for (var i = 0; i < visits.length; i++) {
+      if (visits[i][3] == name) {
+        alert("Неможливо видалити лікаря! Він використовується в таблиці прийомів.");
+        return;
+      }
+    }
+
+    doctors.splice(index, 1);
+    fillTable("doctors-body", doctors);
+  }
+
+  // Видалення пацієнта
+  else if (type == "patients-body") {
+    var name = shortName(patients[index][1]);
+
+    // Перевіряємо, чи використовується пацієнт у прийомах
+    for (var i = 0; i < visits.length; i++) {
+      if (visits[i][2] == name) {
+        alert("Неможливо видалити пацієнта! Він використовується в таблиці прийомів.");
+        return;
+      }
+    }
+
+    patients.splice(index, 1);
+    fillTable("patients-body", patients);
+  }
+
+  // Видалення прийому
+  else if (type == "visits-body") {
+    visits.splice(index, 1);
+    fillVisits();
+  }
+
+  saveData();
+}
+
+
+// Редагування ПІБ лікаря або пацієнта
+function editName(type, index) {
+  var data;
+
+  if (type == "doctors-body") {
+    data = doctors;
+  }
+  else {
+    data = patients;
+  }
+
+  var cell = document.getElementById(type).rows[index].cells[1];
+  var oldName = data[index][1];
+
+  // Створюємо поле для введення нового ПІБ
+  cell.innerHTML = '<input type="text" class="edit-input" value="' + oldName + '">';
+
+  var input = cell.querySelector("input");
+  input.focus();
+
+  // Щоб натискання в полі не запускало редагування повторно
+  input.onclick = function(event) {
+    event.stopPropagation();
+  };
+
+  // Зберігаємо зміни після натискання Enter або переходу в інше місце
+  input.onblur = function() {
+    var newName = input.value.trim();
+
+    if (newName != "") {
+      data[index][1] = newName;
+
+      // Оновлюємо ПІБ у таблиці прийомів
+      var oldShort = shortName(oldName);
+      var newShort = shortName(newName);
+
+      for (var i = 0; i < visits.length; i++) {
+        if (type == "doctors-body" && visits[i][3] == oldShort) {
+          visits[i][3] = newShort;
+        }
+
+        if (type == "patients-body" && visits[i][2] == oldShort) {
+          visits[i][2] = newShort;
+        }
+      }
+    }
+
+    // Перемальовуємо таблиці
+    fillTable("doctors-body", doctors);
+    fillTable("patients-body", patients);
+    fillVisits();
+
+    saveData();
+  };
+
+  // Enter завершує редагування
+  input.onkeydown = function(event) {
+    if (event.key == "Enter") {
+      input.blur();
+    }
+  };
+}
+
+
+// Спочатку беремо дані з localStorage, потім виводимо таблиці
+loadData();
 fillTable("doctors-body", doctors);
 fillTable("patients-body", patients);
 fillVisits();
 
 
+// Якщо дані змінили в іншій вкладці - оновлюємо цю сторінку
+window.addEventListener("storage", function() {
+  loadData();
+  fillTable("doctors-body", doctors);
+  fillTable("patients-body", patients);
+  fillVisits();
+});
+
+
+// Перемикання вкладок
 var tabs = document.querySelectorAll(".tab");
 var panels = document.querySelectorAll(".panel");
 
 for (var i = 0; i < tabs.length; i++) {
-  tabs[i].addEventListener("click", function () {
-    // спочатку вимикаємо всі вкладки й панелі
+  tabs[i].addEventListener("click", function() {
+
     for (var k = 0; k < tabs.length; k++) {
       tabs[k].classList.remove("is-active");
       panels[k].classList.remove("is-active");
     }
-    // потім вмикаємо ту, на яку натиснули
+
     this.classList.add("is-active");
+
     var panelId = this.id.replace("btn-", "panel-");
     document.getElementById(panelId).classList.add("is-active");
   });
 }
 
 
-// Попати
-document.getElementById("open-doctors").onclick = function () {
+// Відкриття форм
+document.getElementById("open-doctors").onclick = function() {
   document.getElementById("dialog-doctors").showModal();
 };
-document.getElementById("open-patients").onclick = function () {
+
+document.getElementById("open-patients").onclick = function() {
   document.getElementById("dialog-patients").showModal();
 };
-document.getElementById("open-visits").onclick = function () {
+
+document.getElementById("open-visits").onclick = function() {
   document.getElementById("dialog-visits").showModal();
 };
 
-//закриття попапів 
-document.getElementById("cancel-doctors").onclick = function () {
+
+// Закриття форм
+document.getElementById("cancel-doctors").onclick = function() {
   document.getElementById("dialog-doctors").close();
 };
-document.getElementById("cancel-patients").onclick = function () {
+
+document.getElementById("cancel-patients").onclick = function() {
   document.getElementById("dialog-patients").close();
 };
-document.getElementById("cancel-visits").onclick = function () {
+
+document.getElementById("cancel-visits").onclick = function() {
   document.getElementById("dialog-visits").close();
 };
 
-// додавання лікаря 
-document.getElementById("form-doctors").onsubmit = function (event) {
-  event.preventDefault(); // щоб сторінка не перезавантажувалась
 
-  // збираємо значення з полів у новий рядок (порядок як у таблиці)
+// Додавання лікаря
+document.getElementById("form-doctors").onsubmit = function(event) {
+  event.preventDefault();
+
   var newDoctor = [
     document.getElementById("doc-id").value,
     document.getElementById("doc-name").value,
@@ -127,15 +327,17 @@ document.getElementById("form-doctors").onsubmit = function (event) {
     document.getElementById("doc-schedule").value
   ];
 
-  doctors.push(newDoctor);            // додаємо в масив
-  fillTable("doctors-body", doctors); // перемальовуємо таблицю
+  doctors.push(newDoctor);
+  fillTable("doctors-body", doctors);
+  saveData();
 
-  this.reset();                                   // очищаємо форму
-  document.getElementById("dialog-doctors").close(); // закриваємо попап
+  this.reset();
+  document.getElementById("dialog-doctors").close();
 };
 
-// --- додавання пацієнта ---
-document.getElementById("form-patients").onsubmit = function (event) {
+
+// Додавання пацієнта
+document.getElementById("form-patients").onsubmit = function(event) {
   event.preventDefault();
 
   var newPatient = [
@@ -151,13 +353,15 @@ document.getElementById("form-patients").onsubmit = function (event) {
 
   patients.push(newPatient);
   fillTable("patients-body", patients);
+  saveData();
 
   this.reset();
   document.getElementById("dialog-patients").close();
 };
 
-// --- додавання прийому ---
-document.getElementById("form-visits").onsubmit = function (event) {
+
+// Додавання прийому
+document.getElementById("form-visits").onsubmit = function(event) {
   event.preventDefault();
 
   var newVisit = [
@@ -166,12 +370,13 @@ document.getElementById("form-visits").onsubmit = function (event) {
     document.getElementById("vis-patient").value,
     document.getElementById("vis-doctor").value,
     document.getElementById("vis-reason").value,
-    document.getElementById("vis-status").value, // planned / done / cancelled
+    document.getElementById("vis-status").value,
     document.getElementById("vis-price").value
   ];
 
   visits.push(newVisit);
   fillVisits();
+  saveData();
 
   this.reset();
   document.getElementById("dialog-visits").close();
